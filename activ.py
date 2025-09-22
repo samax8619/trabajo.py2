@@ -1,0 +1,122 @@
+listaUsuarios = []
+
+def usarAppend():
+    nombre = input("Ingrese el nombre del nuevo usuario: ").strip()
+    listaUsuarios.append(nombre)
+    return {"estado": "ok", "mensaje": "Usuario agregado: " + nombre, "datos": []}
+
+def usarExtend():
+    nombres = input("Ingrese varios usuarios separados por coma: ")
+    nuevos = [n.strip() for n in nombres.split(",") if n.strip() != ""]
+    listaUsuarios.extend(nuevos)
+    return {"estado": "ok", "mensaje": "Se agregaron: " + str(nuevos), "datos": []}
+
+def usarInsert():
+    nombre = input("Nombre de usuario a insertar: ").strip()
+    posicion = int(input("Índice donde insertarlo: "))
+    listaUsuarios.insert(posicion, nombre)
+    return {"estado": "ok", "mensaje": "Insertado '" + nombre + "' en posición " + str(posicion), "datos": []}
+
+def usarRemove():
+    nombre = input("Nombre a eliminar: ").strip()
+    listaUsuarios.remove(nombre)
+    return {"estado": "ok", "mensaje": "Eliminado '" + nombre + "'", "datos": []}
+
+def usarPop():
+    pos = input("Índice a eliminar con pop (vacío = último): ").strip()
+    if pos == "":
+        eliminado = listaUsuarios.pop()
+    else:
+        eliminado = listaUsuarios.pop(int(pos))
+    return {"estado": "ok", "mensaje": "Eliminado: " + eliminado, "datos": []}
+
+def usarIndex():
+    nombre = input("Nombre a buscar: ").strip()
+    lugar = listaUsuarios.index(nombre)
+    return {"estado": "ok", "mensaje": "'" + nombre + "' está en posición " + str(lugar), "datos": []}
+
+def usarCount():
+    nombre = input("Nombre a contar: ").strip()
+    repeticiones = listaUsuarios.count(nombre)
+    return {"estado": "ok", "mensaje": "'" + nombre + "' aparece " + str(repeticiones) + " vez/veces", "datos": []}
+
+def usarSort():
+    listaUsuarios.sort()
+    return {"estado": "ok", "mensaje": "Lista ordenada", "datos": []}
+
+def usarReverse():
+    listaUsuarios.reverse()
+    return {"estado": "ok", "mensaje": "Lista invertida", "datos": []}
+
+def mostrarUsuarios():
+    return {"estado": "ok", "mensaje": "Usuarios actuales", "datos": listaUsuarios[:]}
+
+def entrada():
+    print("\n=== MENÚ DE USUARIOS ===")
+    print("1) Añadir un usuario")
+    print("2) Añadir varios usuarios")
+    print("3) Insertar usuario en posición")
+    print("4) Eliminar usuario por nombre")
+    print("5) Eliminar por índice")
+    print("6) Buscar posición de un usuario")
+    print("7) Contar repeticiones")
+    print("8) Ordenar de la A a la Z")
+    print("9) Invertir orden")
+    print("10) Mostrar usuarios")
+    print("0) Finalizar")
+    opcion = input("Seleccione una opción: ").strip()
+    return opcion
+
+def procesar(opcion):
+    if opcion == "1":
+        return usarAppend()
+    elif opcion == "2":
+        return usarExtend()
+    elif opcion == "3":
+        return usarInsert()
+    elif opcion == "4":
+        return usarRemove()
+    elif opcion == "5":
+        return usarPop()
+    elif opcion == "6":
+        return usarIndex()
+    elif opcion == "7":
+        return usarCount()
+    elif opcion == "8":
+        return usarSort()
+    elif opcion == "9":
+        return usarReverse()
+    elif opcion == "10":
+        return mostrarUsuarios()
+    elif opcion == "0":
+        return {"estado": "ok", "mensaje": "finalizar", "datos": []}
+    else:
+        return {"estado": "error", "mensaje": "Opción no válida", "datos": []}
+
+def salida(resultado):
+    if resultado["mensaje"] == "finalizar":
+        print("Programa finalizado.")
+        return False
+    if resultado["estado"] == "ok":
+        if resultado["datos"] == []:
+            print(resultado["mensaje"])
+        else:
+            print(resultado["mensaje"])
+            if resultado["datos"] == []:
+                print("[Lista vacía]")
+            else:
+                indice = 0
+                for elemento in resultado["datos"]:
+                    print(str(indice) + ": " + elemento)
+                    indice = indice + 1
+    else:
+        print(resultado["mensaje"])
+    return True
+
+
+#Main
+while True:
+    opcion = entrada()
+    resultado = procesar(opcion)
+    if not salida(resultado):
+        break
